@@ -58,7 +58,7 @@ CATEGORICAL_COLUMNS = ["isAlive", "title", "male", "culture",
                        "house", "spouse", "isAliveMother", "isAliveFather", "isAliveHeir",
                        "isAliveSpouse", "isMarried", "isNoble", "numDeadRelations",
                        "boolDeadRelations", "isPopular" , "popularity"]
-CONTINUOUS_COLUMNS = ["name", "dateOfBirth", "dateOfDeath", "mother", "father",
+CONTINUOUS_COLUMNS = ["name", "dateOfBirth", "mother", "father",
                       "heir", "book1", "book2", "book3", "book4", "book5",
                       "house", "title", "numDeadRelations"]
 
