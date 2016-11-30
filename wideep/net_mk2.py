@@ -27,7 +27,7 @@ import tensorflow as tf
 import os, sys
 
 import tflearn
-
+## What does this subclass stand for? 
 # tf.logging.set_verbosity(tf.logging.WARN)
 tf.logging.set_verbosity(tf.logging.INFO)
 
@@ -84,7 +84,7 @@ CONTINUOUS_COLUMNS = [
     'dateOfDeath',
 ]
 
-
+## we split training sets  
 X = df_base[COLUMNS]
 y = df_base[LABEL_COLUMN]
 
@@ -139,7 +139,7 @@ class TFLearnWideAndDeep(object):
     def build_model(self, learning_rate=None, deep_n_nodes=[100, 50], deep_dropout=False, bias=True):
         '''
         Model - wide and deep - built using tflearn
-        '''
+        ''' ##Should we change the learning_rate parameters after the evaluation for the optimization? 
         if not learning_rate:
             learning_rate = [0.001, 0.01]
 
@@ -151,7 +151,7 @@ class TFLearnWideAndDeep(object):
             print ("  Input placeholder shape=%s" % str(input_shape))
         wide_inputs = tflearn.input_data(shape=input_shape, name="wide_X")
         if not isinstance(learning_rate, list):
-            learning_rate = [learning_rate, learning_rate]      # wide, deep
+            learning_rate = [learning_rate, learning_rate]      # wide, deep ##here is the input [0.001, 0.01] doubled ? so [0.001, 0.01][ 0.001, 0.01] the dimension is ok?
         if self.verbose:
             print ("  Learning rates (wide, deep)=%s" % learning_rate)
 
