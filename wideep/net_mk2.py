@@ -110,7 +110,7 @@ class TFLearnWideAndDeep(object):
         verbose = `bool`
         name = `str` used for run_id (defaults to model_type)
         tensorboard_verbose = `int`: logging level for tensorboard (0, 1, 2, or 3)
-        wide_learning_rate = `float`: defaults to 0.001
+        wide_learning_rate = `float`: defaults to 0.001                             ##wide_learning_rate = `int`??
         deep_learning_rate = `float`: defaults to 0.001
         checkpoints_dir = `str`: where checkpoint files will be stored (defaults to "CHECKPOINTS")
         '''
@@ -185,15 +185,15 @@ class TFLearnWideAndDeep(object):
             network = tf.add(network, central_bias, name="add_central_bias")
 
         # add validation monitor summaries giving confusion matrix entries
-        with tf.name_scope('Monitors'):
-            predictions = tf.cast(tf.greater(network, 0), tf.int64)
+        with tf.name_scope('Monitors'): ##I just don´t understand this name
+            predictions = tf.cast(tf.greater(network, 0), tf.int64) ##in new versions should be tf.int32??
             print ("predictions=%s" % predictions)
             Ybool = tf.cast(Y_in, tf.bool)
             print ("Ybool=%s" % Ybool)
             pos = tf.boolean_mask(predictions, Ybool)
             neg = tf.boolean_mask(predictions, ~Ybool)
-            psize = tf.cast(tf.shape(pos)[0], tf.int64)
-            nsize = tf.cast(tf.shape(neg)[0], tf.int64)
+            psize = tf.cast(tf.shape(pos)[0], tf.int64) ##Same as before, tf.int32
+            nsize = tf.cast(tf.shape(neg)[0], tf.int64) ## :)
             true_positive = tf.reduce_sum(pos, name="true_positive")
             false_negative = tf.sub(psize, true_positive, name="false_negative")
             false_positive = tf.reduce_sum(neg, name="false_positive")
@@ -222,7 +222,7 @@ class TFLearnWideAndDeep(object):
                 target_wide_net = wide_network
             tflearn.regression(target_wide_net,
                                placeholder=Y_in,
-                               optimizer='sgd', 
+                               optimizer='sgd', ##why this optimizer? I´m sure this can change. Or if not, we should know that wide regression optimizer is different than deep optimizer
                                #loss='roc_auc_score',
                                loss='binary_crossentropy',
                                metric="accuracy",
@@ -267,7 +267,7 @@ class TFLearnWideAndDeep(object):
                                  max_checkpoints=5,
                                  checkpoint_path="%s/%s.tfl" % (self.checkpoints_dir, self.name),
         )
-
+## Once this is running , Do I see the tensorboard go?
         if self.verbose:
             print ("Target variables:")
             for v in tf.get_collection(tf.GraphKeys.TARGETS):
@@ -278,7 +278,7 @@ class TFLearnWideAndDeep(object):
 
     def deep_model(self, wide_inputs, n_inputs, n_nodes=[100, 50], use_dropout=False):
         '''
-        Model - deep, i.e. two-layer fully connected network model
+        Model - deep, i.e. two-layer fully connected network model . ##The nodes 
         '''
         cc_input_var = {}
         cc_embed_var = {}
@@ -327,7 +327,7 @@ class TFLearnWideAndDeep(object):
         Prepare input data dicts
         '''
         print ("-"*40 + " Preparing %s" % name)
-        X = input_data[self.continuous_columns].values.astype(np.float32)
+        X = input_data[self.continuous_columns].values.astype(np.float32) 
         Y = input_data[self.label_column].values.astype(np.float32)
         Y = Y.reshape([-1, 1])
         if self.verbose:
@@ -350,7 +350,7 @@ class TFLearnWideAndDeep(object):
                         print ("  category %s max=%s,  map=%s" % (cc, cc_max, cc_map))
                     category_map[cc] = cc_map
             
-            ### Replaced by for loop with map due to weirdness
+            ### Replaced by for loop with map due to weirdness  ## wait but why??
             ## Commented at http://stackoverflow.com/q/34426321
             def dfreplace_overlapping(df, to_replace, **kwargs): 
                 items = list(pd.compat.iteritems(to_replace))
@@ -434,7 +434,7 @@ class TFLearnWideAndDeep(object):
 
     def output_confusion_matrix(self, y, y_pred):
         assert y.size == y_pred.size
-        print("Actual IDV")
+        print("Actual IDV") ##what does IDV mean?
         print(y.value_counts())
         print("Predicted IDV")
         print(y_pred.value_counts())
